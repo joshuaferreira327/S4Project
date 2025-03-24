@@ -10,6 +10,13 @@ def load_data():
 
 df = load_data()
 
+# Fill missing values and drop duplicates
+df['model_year'] = df['model_year'].fillna(df['model_year'].median())
+df['cylinders'] = df.groupby('model')['cylinders'].transform(lambda x: x.fillna(x.median()))
+df['odometer'] = df.groupby('model')['odometer'].transform(lambda x: x.fillna(x.median()))
+df['paint_color'] = df['paint_color'].fillna('Unknown')
+df = df.drop_duplicates()
+
 # Title and header
 st.title("🚗 Car Listings Dashboard")
 st.header("Explore Car Price Trends and Mileage")
